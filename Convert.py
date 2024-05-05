@@ -1,75 +1,69 @@
 from customtkinter import *
-from PIL import Image, ImageTk
+from PIL import Image
 from tkinter import Canvas
-from Categories import Frame_units
+import Categories
 
-class Convert_unit:
-    def __init__(self, master, var):
-        self.master = master
-        self.master.title("Conversion Window")
-        self.master.geometry("850x600+100+50")
-        self.master.wm_resizable(0, 0)
-        self.master.configure(fg_color='#fff')
+def convert_unit(con_unit):
+        def back_page():
+            master.destroy()
+            Categories.category()
+
+        master = CTk()
+        master.title("Conversion Window")
+        master.geometry("850x610+100+50")
+        master.wm_resizable(0, 0)
+        master.configure(fg_color='#fff')
         color_bg = master.cget('background')
 
-        font1 = CTkFont('Monospace', 34, 'normal', underline=True, slant='italic')
+        font1 = CTkFont('Monospace', 34, 'normal', underline=False, slant='italic')
         font2 = CTkFont('Monospace', 20, 'normal')
         font3 = CTkFont('Monospace', 16, 'normal', slant='italic')
 
-        img = Image.open(".\images\convert_img.png")
-        res = img.resize((500, 750), Image.FASTOCTREE)
-        main_img = CTkLabel(master, text='', image=ImageTk.PhotoImage(res))
-        main_img.place(x=15, y=0)
+        root_img = CTkImage(light_image = Image.open("./images/mg_units.png"), size=(400, 600))
+        main_img = CTkLabel(master, text='', image=root_img)
+        main_img.place(x=15, y=2)
 
-        self.line1 = Canvas(master, width=2, height=710)
-        self.line1.create_line(2, 0, 2, 750, fill='#263238', width=3, dash=(254,254))
-        self.line1.place(x=540, y=10)
+        line1 = Canvas(master, width=2, height=720, highlightbackground=color_bg)
+        line1.create_line(2, 0, 2, 750, fill='#263238', width=3, dash=(254,254))
+        line1.place(x=540, y=10)
 
-        self.label = CTkLabel(master, text="Converting " + con_unit, font = font1, text_color = '#263238')
-        self.label.place(x=500,y = 10)
+        label = CTkLabel(master, text="Converting " +con_unit, font = font1, text_color = '#34444c', width=415, height=60, fg_color='#C4E848')
+        label.place(x=435,y = 8)
 
-        self.from_label = CTkLabel(master, text = 'From', font = font2, text_color = '#263238')
-        self.from_label.place(x = 500, y = 120)
+        from_label = CTkLabel(master, text = 'From', font = font2, text_color = '#263238')
+        from_label.place(x = 500, y = 120)
 
-        self.from_list = CTkComboBox(master, width = 200, corner_radius = 4, border_width = 3, border_color='#C4E848', fg_color = color_bg, bg_color = color_bg, button_hover_color='#EBFFA5',
+        from_list = CTkComboBox(master, width = 200, corner_radius = 4, border_width = 3, border_color='#C4E848', fg_color = color_bg, bg_color = color_bg, button_hover_color='#EBFFA5',
                                      button_color='#C4E848',dropdown_fg_color=color_bg, dropdown_hover_color='#EBFFA5', dropdown_text_color='#263238', dropdown_font=font3, text_color='#263238', state=NORMAL)
-        self.from_list.place(x = 580, y = 120)
+        from_list.place(x = 580, y = 120)
 
-        self.to_label = CTkLabel(master, text='To', font=font2, text_color='#263238')
-        self.to_label.place(x=500, y=180)
+        to_label = CTkLabel(master, text='To', font=font2, text_color='#263238')
+        to_label.place(x=500, y=180)
         # value='', command='', variable=''  in combobox
-        self.to_list = CTkComboBox(master, width = 200, corner_radius = 4, border_width = 3, border_color='#C4E848', fg_color = color_bg, bg_color = color_bg, button_hover_color='#EBFFA5',
+        to_list = CTkComboBox(master, width = 200, corner_radius = 4, border_width = 3, border_color='#C4E848', fg_color = color_bg, bg_color = color_bg, button_hover_color='#EBFFA5',
                                      button_color='#C4E848',dropdown_fg_color=color_bg, dropdown_hover_color='#EBFFA5', dropdown_text_color='#263238', dropdown_font=font3, text_color='#263238', state=NORMAL)
-        self.to_list.place(x=580, y=180)
+        to_list.place(x=580, y=180)
 
-        self.val_lbl = CTkLabel(master, text="Value", font=font2, text_color='#263238')
-        self.val_lbl.place(x=500, y=240)
+        val_lbl = CTkLabel(master, text="Value", font=font2, text_color='#263238')
+        val_lbl.place(x=500, y=240)
 
-        self.val_inp = CTkEntry(master, width=200, corner_radius=4, border_width=3, border_color='#C4E848', placeholder_text='' ,font=font3, state=NORMAL, bg_color=color_bg, fg_color=color_bg)
-        self.val_inp.place(x=580, y=240)
+        val_inp = CTkEntry(master, width=200, corner_radius=4, border_width=3, border_color='#C4E848', placeholder_text='' ,font=font3, state=NORMAL, bg_color=color_bg, fg_color=color_bg)
+        val_inp.place(x=580, y=240)
 
-        self.val_out_lbl = CTkLabel(master, text="Result", font=font2, text_color='#263238')
-        self.val_out_lbl.place(x=500, y=300)
+        val_out_lbl = CTkLabel(master, text="Result", font=font2, text_color='#263238')
+        val_out_lbl.place(x=500, y=300)
 
-        self.val_out = CTkEntry(master, width=200, corner_radius=4, border_width=3, border_color='#C4E848', font=font3, state=DISABLED, bg_color=color_bg, fg_color=color_bg,
+        val_out = CTkEntry(master, width=200, corner_radius=4, border_width=3, border_color='#C4E848', font=font3, state=DISABLED, bg_color=color_bg, fg_color=color_bg,
                                 text_color='#263238')
-        self.val_out.place(x=580, y=300)
+        val_out.place(x=580, y=300)
 
-        self.con_btn = CTkButton(master, text='Convert', width=250, height=30, corner_radius=5, border_width=3, border_color='#C4E848', bg_color=color_bg, fg_color=color_bg, text_color='#263238',
+        con_btn = CTkButton(master, text='Convert', width=250, height=30, corner_radius=5, border_width=3, border_color='#C4E848', bg_color=color_bg, fg_color=color_bg, text_color='#263238',
                                  font=font2, hover_color=color_bg, state=NORMAL)
-        self.con_btn.place(x=520, y=400)
+        con_btn.place(x=520, y=450)
 
-        self.con_btn = CTkButton(master, text='Back', width=250, height=30, corner_radius=5, border_width=3, border_color='#C4E848', bg_color=color_bg, fg_color=color_bg, text_color='#263238',
-                                 font=font2, hover_color=color_bg, state=NORMAL, command=self.backunit)
-        self.con_btn.place(x=520, y=450)
+        back_btn = CTkButton(master, text='Back', width=250, height=30, corner_radius=5, border_width=3, border_color='#C4E848', bg_color=color_bg, fg_color=color_bg, text_color='#263238',
+                                 font=font2, hover_color=color_bg, state=NORMAL, command=back_page)
+        back_btn.place(x=520, y=500)
 
-    def backunit(self):
-        self.master.destroy()
-        new_win = CTk()
-        Frame_units(new_win)
-        new_win.mainloop()
+        master.mainloop()
 
-master = CTk()
-con_unit = 'k'
-my_frame = Convert_unit(master, con_unit)
-master.mainloop()
