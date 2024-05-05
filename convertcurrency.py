@@ -1,5 +1,4 @@
 from customtkinter import *
-from customtkinter import CTkComboBox
 from PIL import Image
 from tktooltip import ToolTip
 from requests import *
@@ -8,13 +7,22 @@ import curr_history
 import Main_window
 
 def currency():
+        def history_cur():
+            master.destroy()
+            curr_history.historyCurr()
+
+        def go_home():
+            master.destroy()
+            temp = CTk()
+            new_win = Main_window.Main_frame(temp)
+            temp.mainloop()
+
         def action():
-            global result_val, lbl_curr_from, lbl_curr_to, value_disp
+            global result, lbl_curr_from, lbl_curr_to, value_disp
             url = "https://currency-converter18.p.rapidapi.com/api/v1/convert"
-            currency_1 = var1
-            currency_2 = var2
-            amount = var3
-            print(currency_1)
+            currency_1 = combo_from.get()
+            currency_2 = combo_to.get()
+            amount = inp_val.get()
 
             if currency_2 == 'USD':
                 symbol = '$'
@@ -55,24 +63,14 @@ def currency():
 
             response = request("GET", url, headers=headers, params=querystring)
             data = loads(response.text)
-            converted_amount = data["result_val"]["convertedAmount"]
+            converted_amount = data["result"]["convertedAmount"]
             formatted = symbol + " {:,.3f}".format(converted_amount)
 
-            result_val['text'] = formatted
-            lbl_curr_from['text'] = combo_from.get()
-            lbl_curr_to['text'] = combo_to.get()
-            value_disp['text'] = inp_val.get()
-            print(converted_amount, formatted)
+            lbl_curr_from.configure(text=currency_1)
+            lbl_curr_to.configure(text=currency_2)
+            value_disp.configure(text=amount)
+            result.configure(text=formatted)
 
-        def history_cur():
-            master.destroy()
-            curr_history.historyCurr()
-
-        def go_home():
-            master.destroy()
-            temp = CTk()
-            new_win = Main_window.Main_frame(temp)
-            temp.mainloop()
 
         master = CTk()
         master.title("Currency Converter")
@@ -88,20 +86,22 @@ def currency():
         head = CTkFrame(master, width=620, height=70, bg_color='#e4ba4e', fg_color='#e4ba4e').pack()
         title = CTkLabel(head, text='Currency Converter', bg_color='#e4ba4e', fg_color='#e4ba4e', font=font1, text_color='#263238').place(x=175, y=15)
 
-        global var3
-        var3 = StringVar()
+        amount = IntVar()
+        currency_1 = StringVar()
+        currency_2 = StringVar()
+
         lbl_val=CTkLabel(master, text='Enter the value', text_color='#263238', fg_color=color_bg, font=font2).place(x=120, y=100)
         inp_val=CTkEntry(master, width=210, height=25, corner_radius=4,border_width=2, border_color='#dea821', bg_color=color_bg, fg_color=color_bg,
-                         text_color='#263238', state=NORMAL, font=font2, textvariable=var3).place(x=270, y=100)
+                         text_color='#263238', state=NORMAL, font=font2, textvariable=amount)
+        inp_val.place(x=270, y=100)
 
         curr = ['CAD', 'BRL', 'EUR', 'INR', 'USD','AUD','GBP','SGD','NZD','NPR','JPY','IDR','RUB','LKR','CNY']
 
-        global var1
-        var1 = StringVar()
-        lbl_from=CTkLabel(master, text='From', text_color='#263238', fg_color=color_bg, font=font2).place(x=120, y=180)
-        combo_from=CTkComboBox(master,width=260, height=25, corner_radius=4,border_width=2, border_color='#dea821', bg_color=color_bg, fg_color=color_bg,
+        lbl_from = CTkLabel(master, text='From', text_color='#263238', fg_color=color_bg, font=font2).place(x=120, y=180)
+        combo_from = CTkComboBox(master,width=260, height=25, corner_radius=4,border_width=2, border_color='#dea821', bg_color=color_bg, fg_color=color_bg,
                                button_color='#dea821', button_hover_color='#dea821', dropdown_hover_color='#dea821', dropdown_fg_color=color_bg, dropdown_text_color='#263238',
-                               text_color='#263238', font=font2, dropdown_font=font3, values=curr, state=NORMAL, justify="center", variable=var1).place(x=230, y=180)
+                               text_color='#263238', font=font2, dropdown_font=font3, values=curr, state=NORMAL, justify="center", variable=currency_1)
+        combo_from.place(x=230, y=180)
 
         img = CTkImage(Image.open('.\images\swap.png'), size=(30,28))
         swap_btn = CTkButton(master, text='',width=60, height=28,image=img, corner_radius=4, border_width=2, border_color='#dea821', fg_color=color_bg, state=NORMAL)
@@ -109,23 +109,28 @@ def currency():
         swap_btn.configure(hover_color='#ebcb7a')
         swap_btn.place(x=300,y=230)
 
-        global var2
-        var2 = StringVar()
+
         lbl_to = CTkLabel(master, text='Into', text_color='#263238', fg_color=color_bg, font=font2).place(x=120,y=300)
         combo_to = CTkComboBox(master, width=260, height=25, corner_radius=4, border_width=2, border_color='#dea821',
                                  bg_color=color_bg, fg_color=color_bg, button_color='#dea821', button_hover_color='#dea821',
                                  dropdown_hover_color='#dea821', dropdown_fg_color=color_bg, dropdown_text_color='#263238',
-                                 text_color='#263238', font=font2, dropdown_font=font3, values=curr, state=NORMAL,justify="center", variable=var2).place(x=230, y=300)
+                                 text_color='#263238', font=font2, dropdown_font=font3, values=curr, state=NORMAL,justify="center", variable=currency_2)
+        combo_to.place(x=230, y=300)
 
         result_frm = CTkFrame(master, width=360, height=140, bg_color=color_bg, fg_color=color_bg, border_width=3, border_color='#dea821', corner_radius=4).place(x=130, y=380)
         global lbl_curr_from, lbl_curr_to
-        lbl_equal = CTkLabel(result_frm, text='=', font=font1, fg_color=color_bg, text_color='#263238').place(x=300, y=430)
-        lbl_curr_from = CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font2).place(x=180, y=400)
-        lbl_curr_to = CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font2).place(x=380, y=400)
+        lbl_equal = CTkLabel(result_frm, text='=', font=font1, fg_color=color_bg, text_color='#263238')
+        lbl_equal.place(x=300, y=430)
+        lbl_curr_from = CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font1)
+        lbl_curr_from.place(x=180, y=400)
+        lbl_curr_to = CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font1)
+        lbl_curr_to.place(x=380, y=400)
 
-        global value_disp, result_val
-        value_disp=CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font2).place(x=180, y=460)
-        result_val = CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font2).place(x=380, y=460)
+        global value_disp, result
+        value_disp=CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font2)
+        value_disp.place(x=180, y=460)
+        result = CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font2)
+        result.place(x=380, y=460)
 
         hst_btn = CTkButton(master, text='History', width=100, height=25, font=font3, text_color='#263238', corner_radius=4,
                              border_width=2, border_color='#dea821', border_spacing=10, bg_color=color_bg,
@@ -139,4 +144,12 @@ def currency():
                              border_width=2, border_color='#dea821', border_spacing=10, bg_color=color_bg,
                              fg_color=color_bg, hover_color='#ebcb7a', command=go_home).place(x=390, y=580)
 
+        result.lift()
+        lbl_curr_from.lift()
+        lbl_curr_to.lift()
+        value_disp.lift()
+        lbl_equal.lift()
+
         master.mainloop()
+
+currency()
