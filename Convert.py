@@ -40,8 +40,8 @@ def convert_unit(con_unit):
         from_label.place(x = 500, y = 120)
 
         var1 = IntVar()
-        var2 = StringVar()
-        var3 = StringVar()
+        var2 = StringVar(value='- -- -- -')
+        var3 = StringVar(value='- -- -- -')
         # Adding units for respective category in Combobox
         conv_units = []
         if (con_unit == 'Length'):
@@ -106,5 +106,3 @@ def convert_unit(con_unit):
         back_btn.place(x=520, y=500)
 
         master.mainloop()
-
-convert_unit('Length')
