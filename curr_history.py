@@ -33,8 +33,8 @@ def historyCurr():
                          font=font2, hover_color=color_bg, state=NORMAL, command=back_curr)
     back_btn.place(x=630, y=570)
 
-    heading = " Date-Time\tFrom \t  To\t    Value \t          Result"
-    sbfrm = CTkScrollableFrame(root, width=570, height=460, corner_radius=8, border_width=1, bg_color='#FDF2FF',
+    heading = " Date-Time\tFrom \t    Into\t    Value \t          Result"
+    sbfrm = CTkScrollableFrame(root, width=595, height=460, corner_radius=8, border_width=1, bg_color='#FDF2FF',
                                fg_color='#FDF2FF', scrollbar_fg_color='#FDF2FF', scrollbar_button_color='#ddeedf',
                                scrollbar_button_hover_color='#ddeedf', orientation="vertical", label_text=heading,
                                label_font=font2, label_anchor="sw", label_text_color='#636C5E',
@@ -56,7 +56,7 @@ def historyCurr():
                 e = CTkButton(sbfrm, width=100, height=20, text_color='#263238', font=font3, border_width=1,
                               border_color='#C3E4C0', fg_color=color_bg, state=NORMAL, hover=False)
                 e.configure(text=student[j])
-                if (j == 0):
+                if (j==0 or j==4):
                     e.configure(width=160)
                     e.grid(row=(i + 1), column=j)
                 else:

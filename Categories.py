@@ -25,7 +25,7 @@ def category():
             Convert.convert_unit('Area')
         def time():
             root.destroy()
-            Convert.convert_unit('Length')
+            Convert.convert_unit('Time')
         def volume():
             root.destroy()
             Convert.convert_unit('Volume')
