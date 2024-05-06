@@ -1,10 +1,13 @@
 from customtkinter import *
+from CTkMessagebox import *
 from PIL import Image
 from tktooltip import ToolTip
+import mysql.connector
 from requests import *
 from json import *
 import curr_history
 import Main_window
+from datetime import datetime
 
 def currency():
         def history_cur():
@@ -21,6 +24,13 @@ def currency():
             lbl_curr_to.configure(text=choice)
         def trace_from(choice):
             lbl_curr_from.configure(text=choice)
+
+        def swap_curr():
+            currency_1 = combo_from.get()
+            combo_from.set(combo_to.get())
+            combo_to.set(currency_1)
+            trace_to(combo_to.get())
+            trace_from(combo_from.get())
 
         def action():
             global result, lbl_curr_from, lbl_curr_to, value_disp
@@ -65,7 +75,6 @@ def currency():
                 'x-rapidapi-host': "currency-converter18.p.rapidapi.com",
                 'x-rapidapi-key': "90c59d6c9fmsh4599f814e2ffc92p17fc6djsndeaa0265ac61"
             }
-
             response = request("GET", url, headers=headers, params=querystring)
             data = loads(response.text)
             converted_amount = data["result"]["convertedAmount"]
@@ -75,6 +84,24 @@ def currency():
             lbl_curr_to.configure(text=currency_2)
             value_disp.configure(text=amount)
             result.configure(text=formatted)
+
+            # Defining writeHistory function to write tuples in database for history
+            def writeHistory():
+                stamp = datetime.now().strftime("%X, " + "%x")
+                new_result = formatted[2:]
+                try:
+                    mydb = mysql.connector.connect(host='localhost', user='root', password='mysql@123456', database='converter')
+                    mycur = mydb.cursor()
+                    query = "INSERT INTO curr_history(on_date, from_curr, to_curr, from_value, into_value) VALUES (%s,%s,%s,%s,%s)"
+                    qvalue = ( stamp,currency_1, currency_2, amount, new_result)
+                    mycur.execute(query, qvalue)
+                    mydb.commit()
+                except:
+                    CTkMessagebox(master, title='Error', message="Action can't be registered into history!",
+                                  icon='cancel', border_width=2, fg_color=color_bg, bg_color=color_bg,
+                                  text_color='#263238', corner_radius=10, fade_in_duration=1, sound=True)
+            # Call to the writeHistory function
+            writeHistory()
 
 
         master = CTk()
@@ -109,7 +136,7 @@ def currency():
         combo_from.place(x=230, y=180)
 
         img = CTkImage(Image.open('.\images\swap.png'), size=(30,28))
-        swap_btn = CTkButton(master, text='',width=60, height=28,image=img, corner_radius=4, border_width=2, border_color='#dea821', fg_color=color_bg, state=NORMAL)
+        swap_btn = CTkButton(master, text='',width=60, height=28,image=img, corner_radius=4, border_width=2, border_color='#dea821', fg_color=color_bg, state=NORMAL, command=swap_curr)
         ToolTip(swap_btn, msg="Swap Currency", delay=0.3, bg='#fff')
         swap_btn.configure(hover_color='#ebcb7a')
         swap_btn.place(x=300,y=230)
@@ -127,15 +154,15 @@ def currency():
         lbl_equal = CTkLabel(result_frm, text='=', font=font1, fg_color=color_bg, text_color='#263238')
         lbl_equal.place(x=300, y=420)
         lbl_curr_from = CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font2)
-        lbl_curr_from.place(x=180, y=390)
+        lbl_curr_from.place(x=180, y=400)
         lbl_curr_to = CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font2)
-        lbl_curr_to.place(x=380, y=390)
+        lbl_curr_to.place(x=380, y=400)
 
         global value_disp, result
-        value_disp=CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font2)
-        value_disp.place(x=180, y=450)
-        result = CTkLabel(result_frm, text='', fg_color=color_bg, text_color='#263238', font=font2)
-        result.place(x=380, y=450)
+        value_disp=CTkLabel(result_frm, text='', width=130,  fg_color=color_bg, bg_color=color_bg, text_color='#263238', font=font2)
+        value_disp.place(x=150, y=450)
+        result = CTkLabel(result_frm, text='', width=135, fg_color=color_bg, bg_color=color_bg, text_color='#263238', font=font2)
+        result.place(x=330, y=450)
 
         hst_btn = CTkButton(master, text='History', width=100, height=25, font=font3, text_color='#263238', corner_radius=4,
                              border_width=2, border_color='#dea821', border_spacing=10, bg_color=color_bg,
@@ -156,3 +183,5 @@ def currency():
         lbl_equal.lift()
 
         master.mainloop()
+
+currency()
