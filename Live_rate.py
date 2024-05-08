@@ -21,7 +21,7 @@ def golive():
         temp.mainloop()
 
     def get_live_rates():
-        url = "https://live-metal-prices.p.rapidapi.com/v1/latest/XAU,XAG,PA,PL,INR"
+        url = "https://live-metal-prices.p.rapidapi.com/v1/latest/XAU,XAG,PA,PL,GBP,EUR/INR"
         headers = {
             "X-RapidAPI-Key": "774edc634amshe1255a8317037eap17711cjsn7570031e82b6",
             "X-RapidAPI-Host": "live-metal-prices.p.rapidapi.com"
@@ -43,10 +43,10 @@ def golive():
 
         # Define buying prices
         buying_prices = {
-            'XAU': 2429.452393,  # Buying price for gold
-            'XAG': 25.461696,   # Buying price for silver
-            'PA': 942.497425,   # Buying price for platinum
-            'PL': 960.585182    # Buying price for palladium
+            'XAU': 193498.370962,  # Buying price for gold
+            'XAG': 2280.270249,   # Buying price for silver
+            'PA': 81122.186169,   # Buying price for platinum
+            'PL': 80681.292126   # Buying price for palladium
         }
 
         rates = get_live_rates()
@@ -65,10 +65,10 @@ def golive():
             }
 
             # Display metal prices
-            gold_rate.configure(text="{:,.2f}".format(gold_price) + ' USD')
-            silver_rate.configure(text="{:,.2f}".format(silver_price) + ' USD')
-            XPT_rate.configure(text="{:,.2f}".format(platinum_price) + ' USD')
-            XPD_rate.configure(text="{:,.2f}".format(palladium_price) + ' USD')
+            gold_rate.configure(text="₹" +" {:,.2f}".format(gold_price))
+            silver_rate.configure(text="₹" +" {:,.2f}".format(silver_price))
+            XPT_rate.configure(text="₹" +" {:,.2f}".format(platinum_price))
+            XPD_rate.configure(text="₹" +" {:,.2f}".format(palladium_price))
 
             #Display profit & loss percentage
             if (profit_loss_percentage['XAU'] <= 0):
