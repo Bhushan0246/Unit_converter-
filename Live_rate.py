@@ -23,7 +23,7 @@ def golive():
     def get_live_rates():
         url = "https://live-metal-prices.p.rapidapi.com/v1/latest/XAU,XAG,PA,PL,INR"
         headers = {
-            "X-RapidAPI-Key": "be0a6559b1msh266f58ebb076fc1p154ef8jsn295e92744e6f",
+            "X-RapidAPI-Key": "774edc634amshe1255a8317037eap17711cjsn7570031e82b6",
             "X-RapidAPI-Host": "live-metal-prices.p.rapidapi.com"
         }
         response = requests.get(url, headers=headers)
