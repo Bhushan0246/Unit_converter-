@@ -5,6 +5,7 @@ from Shadow import *
 import Categories
 import AboutUs
 import convertcurrency
+import Live_rate
 
 class Main_frame:
     def unit_page(self):
@@ -18,6 +19,10 @@ class Main_frame:
     def curr_page(self):
         self.main.destroy()
         convertcurrency.currency()
+
+    def live_page(self):
+        self.main.destroy()
+        Live_rate.golive()
 
     def __init__(self, main):
         self.main = main
@@ -52,7 +57,7 @@ class Main_frame:
 
         conv_img3 = CTkImage(light_image = Image.open("D:/PD/GUI/images/live_rates.png"), size=(90,70))
         self.btn3 = CTkButton(main, text=' Live rate', fg_color=main.cget('background'), font=font2, border_width=2, border_color='#000', border_spacing=3,
-                         corner_radius=7, text_color='#000', image=conv_img3, hover_color='#c0f2c0', height=70, width=220)
+                         corner_radius=7, text_color='#000', image=conv_img3, hover_color='#c0f2c0', height=70, width=220, command=self.live_page)
         self.btn3.place(x=580, y=340)
         Shadow(self.btn3, color='#b3b3b3', size=5, offset_x=5, offset_y=5,
                onhover={'size': 2, 'offset_x': 2, 'offset_y': 3})
