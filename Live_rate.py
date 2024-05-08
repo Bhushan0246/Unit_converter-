@@ -43,10 +43,10 @@ def golive():
 
         # Define buying prices
         buying_prices = {
-            'XAU': 193498.370962,  # Buying price for gold
-            'XAG': 2280.270249,   # Buying price for silver
-            'PA': 81122.186169,   # Buying price for platinum
-            'PL': 80681.292126    # Buying price for palladium
+            'XAU': 2429.452393,  # Buying price for gold
+            'XAG': 25.461696,   # Buying price for silver
+            'PA': 942.497425,   # Buying price for platinum
+            'PL': 960.585182    # Buying price for palladium
         }
 
         rates = get_live_rates()
@@ -65,10 +65,10 @@ def golive():
             }
 
             # Display metal prices
-            gold_rate.configure(text="₹" +" {:,.2f}".format(gold_price))
-            silver_rate.configure(text="₹" +" {:,.2f}".format(silver_price))
-            XPT_rate.configure(text="₹" +" {:,.2f}".format(platinum_price))
-            XPD_rate.configure(text="₹" +" {:,.2f}".format(palladium_price))
+            gold_rate.configure(text="{:,.2f}".format(gold_price) + ' USD')
+            silver_rate.configure(text="{:,.2f}".format(silver_price) + ' USD')
+            XPT_rate.configure(text="{:,.2f}".format(platinum_price) + ' USD')
+            XPD_rate.configure(text="{:,.2f}".format(palladium_price) + ' USD')
 
             #Display profit & loss percentage
             if (profit_loss_percentage['XAU'] <= 0):
@@ -93,7 +93,7 @@ def golive():
             gold_rate.configure(text="Failed to retrive \ndata through API")
 
         #refreshes the rate after every 5 seconds
-        root.after((1000*120), display_rates)
+        root.after((1000*300), display_rates)
 
     root = CTk()
     root.title("Live Rates")
@@ -207,3 +207,4 @@ def golive():
 
     display_rates()
     root.mainloop()
+#key - 5DP0NSLZIUF3ZV5U  (alphavantage.co)
