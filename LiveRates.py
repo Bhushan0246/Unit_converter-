@@ -1,64 +1,93 @@
+'''from customtkinter import *
+from PIL import Image
+from tktooltip import ToolTip
 from tkinter import *
+import requests
+import json'''
+import json
+import requests
 from customtkinter import *
-from PIL import Image, ImageTk
-import Categories
-import AboutUs
-import convertcurrency
+from tkinter import *
 
-class Main_frame:
-    def unit_page(self):
-        self.main.destroy()
-        Categories.category()
+def liveRates():
+    def get_live_rates():
+        url = "https://live-metal-prices.p.rapidapi.com/v1/latest/XAU,XAG,PA,PL,GBP,EUR/INR"
+        headers = {
+            "X-RapidAPI-Key": "be0a6559b1msh266f58ebb076fc1p154ef8jsn295e92744e6f",
+            "X-RapidAPI-Host": "live-metal-prices.p.rapidapi.com"
+        }
+        response = requests.get(url, headers=headers)
+        print(response.text)  # Print response text
+        if response.status_code == 200:
+            data = json.loads(response.text)
+            metal_prices = {}
+            for metal, rate in data["rates"].items():
+                metal_prices[metal] = rate
+            return metal_prices
+        else:
+            return None
 
-    def about_page(self):
-        self.main.destroy()
-        AboutUs.about()
+    def display_rates():
+        # Define buying prices
+        buying_prices = {
+            'XAU': 194129.452393,  # Buying price for gold
+            'XAG': 2285.461696,   # Buying price for silver
+            'PA': 80342.497425,   # Buying price for platinum
+            'PL': 81960.585182    # Buying price for palladium
+        }
 
-    def curr_page(self):
-        self.main.destroy()
-        convertcurrency.currency()
+        rates = get_live_rates()
+        if rates:
+            gold_price = float(rates['XAU'])
+            silver_price = float(rates['XAG'])
+            platinum_price = float(rates['PA'])
+            palladium_price = float(rates['PL'])
+            pound_price = float(rates['GBP'])
+            euro_price = float(rates['EUR'])
 
-    def __init__(self, main):
-        self.main = main
-        self.main.geometry('825x600+100+50')
-        self.main.wm_title('Live Rates')
-        self.main.wm_resizable(0, 0)
-        self.main.configure(fg_color='#e6ffe6')
+            # Calculate profit or loss as percentage
+            profit_loss_percentage = {
+                'XAU': ((gold_price - buying_prices['XAU']) / buying_prices['XAU']) * 100,
+                'XAG': ((silver_price - buying_prices['XAG']) / buying_prices['XAG']) * 100,
+                'PA': ((platinum_price - buying_prices['PA']) / buying_prices['PA']) * 100,
+                'PL': ((palladium_price - buying_prices['PL']) / buying_prices['PL']) * 100
+            }
 
-        font1 = CTkFont('Monospace', 34, 'normal', underline=True, slant='italic')
-        font2 = CTkFont('Monospace', 20, 'normal')
-        font3 = CTkFont('Monospace', 16, 'normal')
+            # Display metal prices and profit/loss percentage
+            text_area.config(state='normal')
+            text_area.delete('1.0', END)
+            text_area.insert(END, f"Gold Price (XAU): {gold_price} ({profit_loss_percentage['XAU']:.2f}%) (24H)\n")
+            text_area.insert(END, f"Silver Price (XAG): {silver_price} ({profit_loss_percentage['XAG']:.2f}%) (24H)\n")
+            text_area.insert(END, f"Platinum Price (PA): {platinum_price} ({profit_loss_percentage['PA']:.2f}%) (24H)\n")
+            text_area.insert(END, f"Palladium Price (PL): {palladium_price} ( {profit_loss_percentage['PL']:.2f}%) (24H)\n")
+            text_area.insert(END, f"GBP to INR Exchange Rate: {pound_price}\n")
+            text_area.insert(END, f"EUR to INR Exchange Rate: {euro_price}\n")
+            text_area.config(state='disabled')
+        else:
+            text_area.config(state='normal')
+            text_area.delete('1.0', END)
+            text_area.insert(END, "Failed to retrieve data from API")
+            text_area.config(state='disabled')
 
-        self.ttl = CTkLabel(main, text='Live Rates', font=font1, text_color='#404040')
-        self.ttl.place(x=350, y=20)
+        #refreshes the rate after every 5 seconds
+        master.after(500000000, display_rates)
 
-        img = CTkImage(light_image=Image.open("D:\PD\GUI\images\mainframe_img.png"), size=(480,500))
-        self.main_img = CTkLabel(main, text='', image=img)
-        self.main_img.place(x=15, y=100)
+    master = CTk()
+    master.title("Live Rates")
+    master.geometry("1000x700+400+60")
+    master.wm_resizable(0, 0)
+    master.configure(fg_color='#fff')
+    color_bg = master.cget('background')
 
-        conv_img1 = CTkImage(light_image = Image.open("D:\PD\GUI\images\conversion.png"), size=(90,60))
-        self.btn1 = CTkButton(main, text=' Units', fg_color=main.cget('background'), font=font2, border_width=2, border_color='#000', border_spacing=3,
-                         corner_radius=7, text_color='#000', image=conv_img1, hover_color='#c0f2c0', height=70, width=220, command=self.unit_page)
-        self.btn1.place(x=580, y=110)
+    custom_font = ("Arial", 14)
 
-        conv_img2 = CTkImage(light_image=Image.open("D:\PD\GUI\images\currency-conversion.png"), size=(100, 80))
-        self.btn2 = CTkButton(main, text=' Currency', fg_color=main.cget('background'), font=font2, border_width=2, border_color='#000', border_spacing=3,
-                         corner_radius=7, text_color='#000', image = conv_img2, hover_color='#c0f2c0', height=70, width=220, command=self.curr_page)
-        self.btn2.place(x=520, y=225)
-
-        conv_img3 = CTkImage(light_image = Image.open("D:\PD\GUI\images\live_rates.png"), size=(90,70))
-        self.btn3 = CTkButton(main, text=' Live rate', fg_color=main.cget('background'), font=font2, border_width=2, border_color='#000', border_spacing=3,
-                         corner_radius=7, text_color='#000', image=conv_img3, hover_color='#c0f2c0', height=70, width=220)
-        self.btn3.place(x=580, y=340)
-
-        conv_img4 = CTkImage(light_image=Image.open("D:\PD\GUI\images\employees.png"), size=(90,70))
-        self.btn4 = CTkButton(main, text=' About us', fg_color=main.cget('background'), font=font2, border_width=2, border_color='#000', border_spacing=3,
-                         corner_radius=7, text_color='#000', image=conv_img4, hover_color='#c0f2c0', height=70, width=220, command=self.about_page)
-        self.btn4.place(x=520, y=455)
+    text_area = Text(master, wrap='word', height=120, width=300, bg='white', fg='black', insertbackground='white',font=custom_font)
+    text_area.pack(pady=0)
+    text_area.config(state='disabled')
 
 
-#-------------------- ----------------------- ----------------------- ------------------------ ----------------------
-if __name__ == "__main__":
-    main = CTk()
-    obj = Main_frame(main)
-    main.mainloop()
+    display_rates()
+
+    master.mainloop()
+
+liveRates()
