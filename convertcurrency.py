@@ -121,6 +121,20 @@ def currency():
         currency_1 = StringVar(value='CAD')
         currency_2 = StringVar(value='BRL')
 
+        rupee = CTkImage(Image.open('./images/cur_rupee.png'), size=(80, 70))
+        CTkLabel(master, text='', fg_color="transparent", bg_color="transparent", image=rupee).place(x=10, y=120)
+        dollar = CTkImage(Image.open('./images/cur_dollar.png'), size=(80, 70))
+        CTkLabel(master, text='', fg_color="transparent", bg_color="transparent", image=dollar).place(x=475, y=310)
+        JPY = CTkImage(Image.open('./images/cur_JPY.png'), size=(100, 85))
+        CTkLabel(master, text='', fg_color="transparent", bg_color="transparent", image=JPY).place(x=180, y=490)
+        cent = CTkImage(Image.open('./images/cur_cent.png'), size=(100, 85))
+        CTkLabel(master, text='', fg_color="transparent", bg_color="transparent", image=cent).place(x=500, y=100)
+        euro = CTkImage(Image.open('./images/cur_euro.png'), size=(80, 70))
+        CTkLabel(master, text='', fg_color="transparent", bg_color="transparent", image=euro).place(x=30, y=580)
+        plant = CTkImage(Image.open('./images/Plants.png'), size=(210, 305))
+        CTkLabel(master, text='', fg_color="transparent", bg_color="transparent", image=plant).place(x=410, y=400)
+
+
         lbl_val=CTkLabel(master, text='Enter the value', text_color='#263238', fg_color=color_bg, font=font2).place(x=120, y=100)
         inp_val=CTkEntry(master, width=210, height=25, corner_radius=4,border_width=2, border_color='#ff9166', bg_color=color_bg, fg_color=color_bg,
                          text_color='#263238', state=NORMAL, font=font2, textvariable=amount)
@@ -134,14 +148,11 @@ def currency():
                                text_color='#263238', font=font2, dropdown_font=font3, values=curr, state=NORMAL, justify="center", variable=currency_1, command=trace_from)
         combo_from.place(x=230, y=180)
 
-        img = CTkImage(Image.open('.\images\swap.png'), size=(30,28))
+        img = CTkImage(Image.open('./images/swap.png'), size=(30,28))
         swap_btn = CTkButton(master, text='',width=60, height=28,image=img, corner_radius=4, border_width=2, border_color='#ff9166', fg_color=color_bg, state=NORMAL, command=swap_curr)
         ToolTip(swap_btn, msg="Swap Currency", delay=0.3, bg='#fff')
         swap_btn.configure(hover_color='#ffc8b3')
         swap_btn.place(x=320,y=230)
-
-        '''img1 = CTkImage(Image.open('.\images\drone_right.png'), size=(190, 180))
-        CTkLabel(master, text='', fg_color="transparent", bg_color="transparent", image=img1).place(x=435, y=310)'''
 
         lbl_to = CTkLabel(master, text='Into', text_color='#263238', fg_color=color_bg, font=font2).place(x=120,y=300)
         combo_to = CTkComboBox(master, width=260, height=25, corner_radius=4, border_width=2, border_color='#ff9166',
@@ -175,8 +186,8 @@ def currency():
                              hover_color='#ffc8b3', command=action).place(x=260, y=580)
 
         back_btn = CTkButton(master, text='Back', width=100, height=25, font=font3, text_color='#263238', corner_radius=4,
-                             border_width=2, border_color='#ff9166', border_spacing=10, bg_color=color_bg,
-                             fg_color=color_bg, hover_color='#ffc8b3', command=go_home).place(x=390, y=580)
+                             border_width=2, border_color='#ff9166', border_spacing=10, bg_color='transparent',
+                             fg_color='transparent', hover_color='#ffc8b3', command=go_home).place(x=390, y=580)
 
         result.lift()
         lbl_curr_from.lift()
