@@ -43,10 +43,10 @@ def golive():
 
         # Define buying prices
         buying_prices = {
-            'XAU': 2429.452393,  # Buying price for gold
-            'XAG': 25.461696,   # Buying price for silver
-            'PA': 942.497425,   # Buying price for platinum
-            'PL': 960.585182    # Buying price for palladium
+            'XAU': 193498.370962,  # Buying price for gold
+            'XAG': 2280.270249,   # Buying price for silver
+            'PA': 81122.186169,   # Buying price for platinum
+            'PL': 80681.292126    # Buying price for palladium
         }
 
         rates = get_live_rates()
