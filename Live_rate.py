@@ -55,10 +55,10 @@ def golive():
             # Display metal prices and profit/loss percentage
             text_area.config(state='normal')
             text_area.delete('1.0', END)
-            text_area.insert(END, f"Gold Price (XAU): {gold_price} ({profit_loss_percentage['XAU']:.2f}%) (24H)\n")
-            text_area.insert(END, f"Silver Price (XAG): {silver_price} ({profit_loss_percentage['XAG']:.2f}%) (24H)\n")
-            text_area.insert(END, f"Platinum Price (XPT): {platinum_price} ({profit_loss_percentage['PA']:.2f}%) (24H)\n")
-            text_area.insert(END, f"Palladium Price (PL): {palladium_price} ( {profit_loss_percentage['PL']:.2f}%) (24H)\n")
+            text_area.insert(END, f"Gold Price (XAU): {gold_price:.2f} ({profit_loss_percentage['XAU']:.2f}%) (24H)\n")
+            text_area.insert(END, f"Silver Price (XAG): {silver_price:.2f} ({profit_loss_percentage['XAG']:.2f}%) (24H)\n")
+            text_area.insert(END, f"Platinum Price (XPT): {platinum_price:.2f} ({profit_loss_percentage['PA']:.2f}%) (24H)\n")
+            text_area.insert(END, f"Palladium Price (PL): {palladium_price:.2f} ( {profit_loss_percentage['PL']:.2f}%) (24H)\n")
             text_area.config(state='disabled')
         else:
             text_area.config(state='normal')
