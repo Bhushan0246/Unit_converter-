@@ -23,7 +23,7 @@ def golive():
     def get_live_rates():
         url = "https://live-metal-prices.p.rapidapi.com/v1/latest/XAU,XAG,PA,PL,GBP,EUR/INR"
         headers = {
-            "X-RapidAPI-Key": "774edc634amshe1255a8317037eap17711cjsn7570031e82b6",
+            "X-RapidAPI-Key": "f72c060b4emsha3eeb10b1ad8ecap1daa59jsn080a329bb21b",
             "X-RapidAPI-Host": "live-metal-prices.p.rapidapi.com"
         }
         response = requests.get(url, headers=headers)
@@ -43,10 +43,10 @@ def golive():
 
         # Define buying prices
         buying_prices = {
-            'XAU': 193498.370962,  # Buying price for gold
-            'XAG': 2280.270249,   # Buying price for silver
-            'PA': 81122.186169,   # Buying price for platinum
-            'PL': 80681.292126   # Buying price for palladium
+            'XAU': 195502.765339,  # Buying price for gold
+            'XAG': 2639.044768,   # Buying price for silver
+            'PA':87793.04424 ,   # Buying price for platinum
+            'PL': 82735.16444   # Buying price for palladium
         }
 
         rates = get_live_rates()
@@ -92,8 +92,8 @@ def golive():
             print("Failed to retrive data through API")
             gold_rate.configure(text="Failed to retrive \ndata through API")
 
-        #refreshes the rate after every 5 seconds
-        root.after((1000*300), display_rates)
+        #refreshes the rate after every 6 seconds
+        root.after((1000*6), display_rates)
 
     root = CTk()
     root.title("Live Rates")
